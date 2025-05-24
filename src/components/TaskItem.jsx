@@ -10,7 +10,7 @@ function TaskItem({task, onToggleComplete, onDelete}) {
 
         {/* Buttons to toggle completion & delete task */}
         <button onClick={() => onToggleComplete(task.id)}>
-            {!task.completed ?  'Undo Complete' : 'Mark As Completed' }
+            {task.completed ?  'Undo Complete' : 'Mark As Completed' }
         </button>
         <button onClick={() => onDelete(task.id)}>Delete</button>
         </li>
