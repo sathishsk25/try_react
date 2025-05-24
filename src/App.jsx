@@ -1,11 +1,13 @@
 import './App.css'
+import TaskList from './components/TaskList'
 import { useState } from 'react'
 
 function App() {
   const [newTaskInput, setNewTaskInput] =  useState('')
   const [tasks, setNewTask] = useState([
-    {id: 1, name: "Task 1", completed: true},
-    {id: 2, name: "Task 2", completed: true}
+    {id: 1, name: "Task 1", completed: false},
+    {id: 2, name: "Task 2", completed: true},
+    {id: 3, name: "Task 2", completed: true}
   ])
 
   const addTask = () => {
@@ -17,21 +19,33 @@ function App() {
     setNewTaskInput("")
    }
 
+   const toggleComplete = (id) => {
+    setNewTask(tasks.map(task => 
+      task.id === id ? {...task, completed: !task.completed} : task
+    ));
+   }
+
+   const deleteTask = (id) => {
+    setNewTask(tasks.filter(task => (
+      task.id !== id
+    )))
+   }
 
   return (
-    <>
-      <h2>Task List</h2>
-      <input onChange={e => setNewTaskInput(e.target.value)} value={newTaskInput}/>
-      <button onClick={addTask}>Add Task</button>
-      <ul class="task-list">
-        {
-          tasks.map(task => (
-            <li key={task.id}>{task.name}</li>
-          ))
-        }
-
-      </ul>
-    </>
+      <>
+        <TaskList 
+          tasks={tasks}
+          onDelete={deleteTask}
+          onToggleComplete={toggleComplete}
+        />
+        <input 
+          type='text'
+          onChange={e => setNewTaskInput(e.target.value)} 
+          value={newTaskInput}
+          placeholder='Add new task'
+        />
+        <button onClick={addTask}>Add Task</button>
+      </>
   )
 }
 
