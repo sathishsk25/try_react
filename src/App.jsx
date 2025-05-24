@@ -1,15 +1,28 @@
 import './App.css'
 import TaskList from './components/TaskList'
 import TaskForm from './components/TaskForm'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function App() {
 
-  const [tasks, setNewTask] = useState([
-    {id: 1, name: "Task 1", completed: false},
-    {id: 2, name: "Task 2", completed: true},
-    {id: 3, name: "Task 2", completed: true}
-  ])
+  const [tasks, setNewTask] = useState(() => {
+    const savedTasks = localStorage.getItem('tasks');
+    return savedTasks ? JSON.parse(savedTasks) : [
+      {id: 1, name: "Task 1", completed: false},
+      {id: 2, name: "Task 2", completed: true},
+      {id: 3, name: "Task 2", completed: true}
+    ]
+  });
+
+  useEffect(() => {
+    console.log('Tasks state changed, saving to local storage');
+    localStorage.setItem('tasks', JSON.stringify(tasks))
+  }, [tasks])
+
+  useEffect(() => {
+    const pendingTasks =  tasks.filter(task => !task.completed).length
+    document.title = `Task Manager (${pendingTasks} pending)`
+  })
 
   const addTask = (text) => {
         const newId = tasks.length > 0 ? Math.max(...tasks.map(t => (t.id))) + 1 : 1;
