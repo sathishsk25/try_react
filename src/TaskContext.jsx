@@ -1,26 +1,19 @@
-import React, {useState, useEffect} from 'react'
+import React, { useEffect } from 'react'
+import useLocalStorage from './useLocalStorage'
 
 const TaskContext = React.createContext();
 
 export function TaskProvider({children}) {
-    const [tasks, setNewTask] = useState(() => {
-    const savedTasks = localStorage.getItem('tasks');
-    return savedTasks ? JSON.parse(savedTasks) : [
+    const [ tasks, setNewTask ] = useLocalStorage( 'tasks', [
         {id: 1, name: "Task 1", completed: false},
         {id: 2, name: "Task 2", completed: true},
         {id: 3, name: "Task 2", completed: true}
-    ]
-    });
+    ]);
 
     useEffect(() => {
-    console.log('Tasks state changed, saving to local storage');
-    localStorage.setItem('tasks', JSON.stringify(tasks))
+        console.log('Tasks state changed, saving to local storage');
+        localStorage.setItem('tasks', JSON.stringify(tasks))
     }, [tasks])
-
-    useEffect(() => {
-    const pendingTasks =  tasks.filter(task => !task.completed).length
-    document.title = `Task Manager (${pendingTasks} pending)`
-    })
 
     const addTask = (text) => {
         const newId = tasks.length > 0 ? Math.max(...tasks.map(t => (t.id))) + 1 : 1;
