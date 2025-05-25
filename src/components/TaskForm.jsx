@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useTask } from "../TaskContext";
 
-function TaskForm({onAddTask}) {
+function TaskForm() {
+
+    const { addTask } = useTask()
 
     const [ newTaskText, setnewTaskText ] = useState('')
     const handleSubmit = (e) => {
@@ -9,7 +12,7 @@ function TaskForm({onAddTask}) {
             alert('Task cannot be empty!');
             return;
         }
-        onAddTask(newTaskText);
+        addTask(newTaskText);
         setnewTaskText('');
     }
 

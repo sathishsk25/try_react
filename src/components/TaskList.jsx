@@ -1,6 +1,8 @@
 import TaskItem from './TaskItem'
+import {useTask} from '../TaskContext'
 
-function TaskList({ tasks, onDelete, onToggleComplete }) {
+function TaskList() {
+    const { tasks, deleteTask, toggleComplete } = useTask()
     return (
         <div>
             <ul>
@@ -10,8 +12,8 @@ function TaskList({ tasks, onDelete, onToggleComplete }) {
                         <TaskItem 
                             key={task.id} 
                             task={task}
-                            onDelete={onDelete}
-                            onToggleComplete={onToggleComplete}
+                            onDelete={deleteTask}
+                            onToggleComplete={toggleComplete}
                         />
                     ))
                 }
