@@ -1,18 +1,19 @@
 import { useState } from "react";
-import { useTask } from "../TaskContext";
+import { useDispatch } from "react-redux";
+import { addTask } from "../store/tasksSlice";
 
 function TaskForm() {
 
-    const { addTask } = useTask()
-
     const [ newTaskText, setnewTaskText ] = useState('')
+    const dispatch = useDispatch();
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if(newTaskText.trim() === '') {
             alert('Task cannot be empty!');
             return;
         }
-        addTask(newTaskText);
+        dispatch(addTask(newTaskText));
         setnewTaskText('');
     }
 

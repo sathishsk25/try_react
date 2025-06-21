@@ -1,8 +1,19 @@
 import TaskItem from './TaskItem'
-import {useTask} from '../TaskContext'
+import { useDispatch, useSelector } from 'react-redux'
+import { deleteTask, toggleComplete } from '../store/tasksSlice';
 
 function TaskList() {
-    const { tasks, deleteTask, toggleComplete } = useTask()
+    const tasks = useSelector((state) => state.tasks);
+    const dispatch = useDispatch();
+
+    const handleToggleComplete = (id) => {
+    dispatch(toggleComplete(id)); 
+  };
+
+    const handleDelete = (id) => {
+        dispatch(deleteTask(id)); 
+    };
+
     return (
         <div>
             <ul>
@@ -12,8 +23,8 @@ function TaskList() {
                         <TaskItem 
                             key={task.id} 
                             task={task}
-                            onDelete={deleteTask}
-                            onToggleComplete={toggleComplete}
+                            onDelete={handleDelete}
+                            onToggleComplete={handleToggleComplete}
                         />
                     ))
                 }
